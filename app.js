@@ -17,6 +17,8 @@ let todos = [
   }
 ];
 
+let notes = [];
+
 // GET all todos
 app.get('/todos', (req, res) => {
   res.status(200).json(todos);
@@ -102,6 +104,27 @@ app.delete('/todos/:id', (req, res) => {
   }
 
   res.status(204).send();
+});
+
+// POST create a new note
+app.post('/notes', (req, res) => {
+  const { title, content } = req.body;
+
+  if (!title || !content) {
+    return res.status(400).json({
+      message: 'Title and content are required'
+    });
+  }
+
+  const newNote = {
+    id: notes.length + 1,
+    title,
+    content
+  };
+
+  notes.push(newNote);
+
+  res.status(201).json(newNote);
 });
 
 // Error handler
